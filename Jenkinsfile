@@ -1,9 +1,14 @@
 pipeline {
     agent any
-    tools{
-        maven 'mymaven'
+    tools {
+        maven 'mymaven'  // Asegúrate de que 'mymaven' esté correctamente configurado en Jenkins
     }
     stages {
+        stage('Build') {  // Nuevo stage para la compilación del código
+            steps {
+                sh 'mvn clean install'  // Ejecuta el comando de Maven para compilar el proyecto
+            }
+        }
         stage('Compile') {
             steps {
                 build job: 'ABC_Compile_Code'
@@ -18,8 +23,8 @@ pipeline {
             steps {
                 build job: 'ABC_PACK_Code'
             } 
-            post{
-                success{
+            post {
+                success {
                     echo "Archiving the Artifacts"
                     archiveArtifacts artifacts: '**/target/*.war'
                 }
